@@ -3,6 +3,7 @@ from urlparse import urlparse
 from flask import Flask
 from pymongo import Connection
  
+app = Flask(__name__)
 MONGO_URL = os.environ.get('MONGOHQ_URL')
  
 if MONGO_URL:
@@ -17,11 +18,17 @@ else:
   db = connection['MyDB']
   app.debug = True
  
-app = Flask(__name__)
-
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
-
+def hello():
+  myObj = db.analytics.find_one({'event':'page_views'})
+  if not myObj:
+    myObj = {'event':'page_views', 'count':1}
+  else:
+    myObj['count'] += 1
+  db.analytics.save(myObj)
+  return 'Hello World! ' + str(myObj['count'])
+ 
 if __name__ == '__main__':
-    app.run()
+  # Bind to PORT if defined, otherwise default to 5000.
+  port = int(os.environ.get('PORT', 5000))
+  app.run(host='0.0.0.0', port=port)
