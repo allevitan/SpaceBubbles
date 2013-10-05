@@ -3,6 +3,9 @@ from urlparse import urlparse
 from flask import Flask, render_template, send_from_directory
 from mongoengine import *
 from server import models
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
 
 app = Flask(__name__)
 MONGO_URL = os.environ.get('MONGOHQ_URL')
@@ -27,6 +30,14 @@ def static_files(filename):
     return send_from_directory('static',filename)
 
 if __name__ == '__main__':
-  # Bind to PORT if defined, otherwise default to 5000.
+
+  #
   port = int(os.environ.get('PORT', 5000))
-  app.run(host='0.0.0.0', port=port)
+
+  #The tornado stuff
+  http_server = HTTPServer(WSGIContainer(app))
+  http_server.listen(port)
+  IOLoop.instance().start()
+
+  # Bind to PORT if defined, otherwise default to 5000.
+  #app.run(host='0.0.0.0', port=port)
