@@ -1,6 +1,6 @@
 import os
 from urlparse import urlparse
-from flask import Flask
+from flask import Flask, render_template, send_from_directory
 from mongoengine import *
 from app import models
 
@@ -20,9 +20,11 @@ else:
 
 @app.route('/')
 def hello():
-  users =  models.User.objects
-  if users:
-    return users[0].name
+  return render_template('home.html')
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static',filename)
 
 if __name__ == '__main__':
   # Bind to PORT if defined, otherwise default to 5000.
