@@ -2,7 +2,7 @@ import os
 from urlparse import urlparse
 from flask import Flask, render_template, send_from_directory
 from mongoengine import *
-from app import models
+from server import models
 
 app = Flask(__name__)
 MONGO_URL = os.environ.get('MONGOHQ_URL')
