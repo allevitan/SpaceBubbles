@@ -11,3 +11,18 @@ body {
 .well {
  color:black;
 }
+
+#viz {
+ margin-left:-30%;
+ width:100%;
+}
+
+#desc {
+    font-size:18;
+}
+
+#disWhereYouNeedToPutIt {
+    position:Absolute;
+    margin-top:25px;
+    font-size:24;
+}
