@@ -26,12 +26,14 @@ class Signup(MethodView):
     
 
     def get(self):
-        #Maybe add an error - if you're already logged in, 
-        #raise an error message and ask the user if s/he 
-        #would like to logout before proceeding.
-        return self.write_form(["", "", "", ""])
+        if (session and session.get('uid')):
+            return redirect('/')
+        else:
+            return self.write_form(["", "", "", ""])
 
     def post(self):
+        if (session and session.get('uid')):
+            return redirect('/')
         input_username = str(request.form.get("username"))
         input_password = str(request.form.get("password"))
         input_verify = str(request.form.get("verify"))

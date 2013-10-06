@@ -22,6 +22,9 @@ else:
 def register_blueprints(app):
     from blueprints.home import home
     from blueprints.static import static
+    from blueprints.myspace import myspace
+    from blueprints.my_graph import my_graph
+    from blueprints.outer_space import outer_space
     from blueprints.api import api
     from blueprints.signup import signup
     from blueprints.login import login
@@ -32,6 +35,9 @@ def register_blueprints(app):
     app.register_blueprint(signup)
     app.register_blueprint(login)
     app.register_blueprint(logout)
+    app.register_blueprint(myspace)
+    app.register_blueprint(my_graph)
+    app.register_blueprint(outer_space)
 
 register_blueprints(app)
 

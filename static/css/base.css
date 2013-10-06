@@ -1,3 +1,13 @@
+h1 {
+ color: white;
+}
+
 body {
+ color:white;
  background-image: url(/static/images/debut_dark.png);
+ z-index:-5;
+}
+
+.well {
+ color:black;
 }
