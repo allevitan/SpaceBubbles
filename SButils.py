@@ -52,9 +52,9 @@ def make_pw_hash(pw, salt=None):
         salt = make_salt()
     return "%s|%s" % (hashlib.sha256(pw+salt).hexdigest(), salt)
 
-def valid_pw(pw, h):
+def valid_pw(inputpw, h):
     salt = h.split('|')[1]
-    if h == make_pw_hash(pw, salt):
+    if h == make_pw_hash(inputpw, salt):
         return True
     else:
         return None
