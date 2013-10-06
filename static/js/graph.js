@@ -29,8 +29,8 @@ $.fn.waitUntilExists    = function (handler, shouldRunHandlerOnce, isChild) {
 
 }(jQuery));
 
-var width = 960,
-    height = 500;
+var width = $(window).width(),
+    height = $(window).height();
 
 var svg = d3.select('#viz')
     .append('svg')
@@ -56,7 +56,7 @@ force.on('tick', function() {
         .attr('y2', function(d) { return d.target.y; });
 });
 
-d3.json('static/json/data.json', function(err, data) {
+d3.json('static/json/steph_firefox.json', function(err, data) {
 
     var max = 0;
     var min = 100;
@@ -81,16 +81,27 @@ d3.json('static/json/data.json', function(err, data) {
         .data( data.nodes )
         .enter().append('g')
         .attr('title', name)
-        .attr('class', 'node')
-        .call( force.drag );
+        .attr('class', 'node');
 
     node.append('circle')
         .attr('r', function(d){
             var value = 3.5*(((d.score - min)/(max-min))-0.5);
             return 30*(1/(1+Math.exp(-value)));
         })
-        .attr('fill', '#231198')
-        .attr('title', function(d) {return d.name;});
+        .attr('title', function(d) {return d.name;})
+        .attr('label', function(d) {return d.title;})
+        .style('fill', function(d) {
+            var value = d.score;
+            var red = Math.floor(255*((value - min)/((max/3)-min)));
+            var blue = 255-red;
+            console.log("START");
+            console.log(value);
+            console.log(red);
+            console.log(blue);
+            var value = "rgb(" + red + ",150," + blue + ')';
+            console.log(value);
+            return value;
+        });
 
     force
         .nodes( data.nodes )
@@ -100,11 +111,19 @@ d3.json('static/json/data.json', function(err, data) {
 });
 
 var change = function(){
-    d3.select(this).attr('r', 25)
-        .attr("fill", "red")
-        .style("stroke","yellow");
+    d3.selectAll(".node").style('visibility', 'hidden');
+    d3.selectAll(".link").style('visibility', 'hidden');
+    d3.select(this.firstChild)
+        .transition()
+        .style('visibility', 'visible')
+        .duration(1000)
+        .attr('r', '30%')
+        .attr('fill','red');
     };
 
 $('#svg-finished').waitUntilExists(function(){
-    d3.selectAll(".node").on('click', change);
+    $("#viz").on("click", function(event){
+        console.log(event.target.getAttribute('title'));
+    });
+    //d3.selectAll(".node").on('click', change);
 });

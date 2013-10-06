@@ -11,4 +11,5 @@ class Home(MethodView):
             return redirect('/login')
         return redirect('my_graph')
 
+#home.add_url_rule("/user_data/<str:user_json>", view_func=Home.as_view('home'))
 home.add_url_rule("/", view_func=Home.as_view('home'))
