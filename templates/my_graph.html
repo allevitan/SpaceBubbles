@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
 {% block header %}
-My Graph <form class="pull-right" action="/process_data" method="post" enctype="multipart/form-data"><input type="submit"> <input type="file" name="history"></input></form>
+{{ name }}'s Graph <form class="pull-right" action="/process_data" method="post" enctype="multipart/form-data"><input type="submit"> <input style="margin-top:9px;" type="file" name="history"></input></form>
 {% endblock %}
 
 {% block content %}
+{% if loaded %}
+<div id="desc">You're Looking at:<div id="disWhereYouNeedToPutIt"></div></div>
 <div id="viz"></div>
 <script src="../static/js/graph.js"></script>
+{% else %}
+<h3> Want to see how you interact with the world wide web? Upload your browser's history (We throw it away right after we analyze it for you). In return, we'll show you where you spend your time on the web - and how you move through the complex network of sites you visit. </p>
+{% endif %}
 {% endblock %}
