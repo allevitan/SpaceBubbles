@@ -1,82 +1,89 @@
 var width = 960,
     height = 500;
 
-var color = d3.scale.category20();
+var svg = d3.select('#viz')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+var node, link;
+
+var voronoi = d3.geom.voronoi()
+    .x(function(d) { return d.x; })
+    .y(function(d) { return d.y; });
+    //.clipExtent([[-10, -10], [width+10, height+10]]);
+
+function recenterVoronoi(nodes) {
+    var shapes = [];
+    voronoi(nodes).forEach(function(d) {
+        if ( !d.length ) return;
+        var n = [];
+        d.forEach(function(c){
+            n.push([ c[0] - d.point.x, c[1] - d.point.y ]);
+        });
+        n.point = d.point;
+        shapes.push(n);
+    });
+    return shapes;
+}
 
 var force = d3.layout.force()
-    .charge(-120)
-    .linkDistance(30)
+    .gravity(0.05)
+    .charge(-1000)
+    .friction(0.3)
+    .linkDistance(50)
     .size([width, height]);
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+force.on('tick', function() {
+    node.attr('transform', function(d) { return 'translate('+d.x+','+d.y+')'; })
+        .attr('clip-path', function(d) { return 'url(#clip-'+d.index+')'; });
 
-d3.json("../static/json/miserables.json", function(error, graph) {
-  force
-      .nodes(graph.nodes)
-      .links(graph.links)
-      .gravity(0.1)
-      .start();
+    link.attr('x1', function(d) { return d.source.x; })
+        .attr('y1', function(d) { return d.source.y; })
+        .attr('x2', function(d) { return d.target.x; })
+        .attr('y2', function(d) { return d.target.y; });
 
-  var link = svg.selectAll(".link")
-      .data(graph.links)
-      .enter().append("line")
-      .attr("class", "link")
-      .style("stroke-width", function(d) { return Math.sqrt(d.value); })
-      .style("stroke", "black")
-      .style("stroke-opacity", 0.8);
+    var clip = svg.selectAll('.clip')
+        .data( recenterVoronoi(node.data()), function(d) { return d.point.index; } );
 
-  var node = svg.selectAll(".node")
-      .data(graph.nodes)
-      .enter().append("circle")
-      .attr("class", "node")
-      .attr("r", function(d) { return d.score; })
-      .style("fill", "#FF0000");
+    clip.enter().append('clipPath')
+        .attr('id', function(d) { return 'clip-'+d.point.index; })
+        .attr('class', 'clip');
+    clip.exit().remove();
 
-  node.append("title")
-      .text(function(d) { return d.name; });
-
-  force.on("tick", function() {
-    var q = d3.geom.quadtree(graph.nodes),
-        i = 0,
-        n = graph.nodes.length;
-
-    while (++i < n) {
-        q.visit(collide(graph.nodes[i]));
-    }
-
-    link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-  });
+    clip.selectAll('path').remove();
+    clip.append('path')
+        .attr('d', function(d) { return 'M'+d.join(',')+'Z'; });
 });
 
-function collide(node) {
-  var r = node.radius + 16,
-      nx1 = node.x - r,
-      nx2 = node.x + r,
-      ny1 = node.y - r,
-      ny2 = node.y + r;
-  return function(quad, x1, y1, x2, y2) {
-    if (quad.point && (quad.point !== node)) {
-      var x = node.x - quad.point.x,
-          y = node.y - quad.point.y,
-          l = Math.sqrt(x * x + y * y),
-          r = node.radius + quad.point.radius;
-      if (l < r) {
-        l = ((l - r) / l*0.5);
-        node.x -= x *= l;
-        node.y -= y *= l;
-        quad.point.x += x;
-        quad.point.y += y;
-      }
-    }
-    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
-  };
-}
+d3.json('static/json/data.json', function(err, data) {
+
+    data.nodes.forEach(function(d, i) {
+        d.id = i;
+    });
+
+    link = svg.selectAll('.link')
+        .data( data.links )
+        .enter().append('line')
+        .attr('class', 'link')
+        .style("stroke-width", function(d) { return Math.log(d.value); })
+        .style("stroke", "black")
+        .style("stroke-opacity", 0.65);
+
+    node = svg.selectAll('.node')
+        .data( data.nodes )
+        .enter().append('g')
+        .attr('title', name)
+        .attr('class', 'node')
+        .call( force.drag );
+
+    node.append('circle')
+        .attr('r', function(d){ return Math.sqrt(d.score); })
+        .attr('stroke', 'black');
+
+    force
+        .nodes( data.nodes )
+        .links( data.links )
+        .start();
+});
 
