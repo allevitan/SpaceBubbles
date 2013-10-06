@@ -105,6 +105,7 @@ class AddComment(MethodView):
         
     	return jsonify({'success':1})
 
+#Mostly not useful because you usually upload the raw data
 class AddGraph(MethodView):
     def post(self):
         if not (session and session.get('uid')):
@@ -122,7 +123,7 @@ class GetGraph(MethodView):
         graphs = Graph.objects(user=user)
         if len(graphs) == 0:
             return jsonify({'error': 'No graphs stored!'})
-        return jsonify(user.graphs[0].data)
+        return jsonify(graphs[0].data)
             
 api.add_url_rule("/api/get/spaces", view_func=GetSpaces.as_view('get_spaces'))
 api.add_url_rule("/api/get/space", view_func=GetSpace.as_view('get_space'))

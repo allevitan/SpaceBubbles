@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-My Graph
+My Graph <form class="pull-right" action="/process_data" method="post" enctype="multipart/form-data"><input type="submit"> <input type="file" name="history"></input></form>
 {% endblock %}
 
 {% block content %}

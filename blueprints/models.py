@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, FloatField, ImageField, ListField, ReferenceField, DateTimeField, IntField, EmailField, DictField
+from mongoengine import Document, StringField, FloatField, ImageField, ListField, ReferenceField, DateTimeField, IntField, EmailField, DictField, FileField
 import datetime
 
 class Page(Document):

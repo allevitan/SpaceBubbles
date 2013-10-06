@@ -8,6 +8,7 @@ from tornado.ioloop import IOLoop
 app = Flask(__name__)
 MONGO_URL = os.environ.get('MONGOHQ_URL')
 app.config['SECRET_KEY'] = 'AJ592ej^9&srehgre034539jrgre'
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 if MONGO_URL:
   # Get a connection
@@ -25,6 +26,7 @@ def register_blueprints(app):
     from blueprints.myspace import myspace
     from blueprints.my_graph import my_graph
     from blueprints.outer_space import outer_space
+    from blueprints.process_data import process_data
     from blueprints.api import api
     from blueprints.signup import signup
     from blueprints.login import login
@@ -38,6 +40,7 @@ def register_blueprints(app):
     app.register_blueprint(myspace)
     app.register_blueprint(my_graph)
     app.register_blueprint(outer_space)
+    app.register_blueprint(process_data)
 
 register_blueprints(app)
 
