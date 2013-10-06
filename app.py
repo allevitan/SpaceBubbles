@@ -25,11 +25,13 @@ def register_blueprints(app):
     from blueprints.api import api
     from blueprints.signup import signup
     from blueprints.login import login
+    from blueprints.logout import logout
     app.register_blueprint(home)
     app.register_blueprint(static)
     app.register_blueprint(api)
     app.register_blueprint(signup)
     app.register_blueprint(login)
+    app.register_blueprint(logout)
 
 register_blueprints(app)
 
