@@ -43,7 +43,7 @@ var force = d3.layout.force()
     .gravity(0.05)
     .charge(-100)
     .friction(0.3)
-    .linkDistance(50)
+    .linkDistance(66)
     .size([width, height]);
 
 force.on('tick', function() {
@@ -56,7 +56,7 @@ force.on('tick', function() {
         .attr('y2', function(d) { return d.target.y; });
 });
 
-d3.json('static/json/steph_firefox.json', function(err, data) {
+d3.json('/api/get/graph', function(err, data) {
 
     var max = 0;
     var min = 100;
@@ -74,8 +74,9 @@ d3.json('static/json/steph_firefox.json', function(err, data) {
         .data( data.links )
         .enter().append('line')
         .attr('class', 'link')
-        .style("stroke-width", function(d) { return Math.log(d.value); })
-        .style("stroke", "black");
+        .style("stroke-width", function(d) { return Math.log(d.value)+1; })
+        .style("stroke", "black")
+        .style("stroke-opacity", function(d){ return Math.log(d.value)+0.66});
 
     node = svg.selectAll('.node')
         .data( data.nodes )
@@ -92,14 +93,9 @@ d3.json('static/json/steph_firefox.json', function(err, data) {
         .attr('label', function(d) {return d.title;})
         .style('fill', function(d) {
             var value = d.score;
-            var red = Math.floor(255*((value - min)/((max/3)-min)));
+            var red = Math.floor(255*(Math.pow((value - min)/(max/15-min), 0.666)));
             var blue = 255-red;
-            console.log("START");
-            console.log(value);
-            console.log(red);
-            console.log(blue);
             var value = "rgb(" + red + ",150," + blue + ')';
-            console.log(value);
             return value;
         });
 
