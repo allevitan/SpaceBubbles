@@ -121,5 +121,8 @@ $('#svg-finished').waitUntilExists(function(){
     $("#viz").on("click", function(event){
         console.log(event.target.getAttribute('title'));
     });
-    //d3.selectAll(".node").on('click', change);
+
+    $("#viz").on("mouseover", function(event){
+        $("#disWhereYouNeedToPutIt").text(event.target.getAttribute('title'));
+    });
 });
