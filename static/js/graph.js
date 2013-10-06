@@ -123,7 +123,7 @@ $('#svg-finished').waitUntilExists(function(){
     });
 
     $("#viz").on("mouseover", function(event){
-        if (event.target.getAttribute('title') != 'null'){
+        if (event.target.getAttribute('title') != null){
             $("#disWhereYouNeedToPutIt").text(event.target.getAttribute('title'));
         }
     });

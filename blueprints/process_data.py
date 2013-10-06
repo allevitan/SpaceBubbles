@@ -22,8 +22,8 @@ class ProcessData(MethodView):
         raw_data = request.files['history']
         user = User.objects.get(id=ObjectId(session.get('uid')))
         filename=user.name
-        if raw_data.filename.split('.')[-1] == 'sql':
-            filename += '.sql'
+        if 'sql' in raw_data.filename.split('.')[-1]:
+            filename += '.sqlite'
         raw_data.save(os.path.join(config['UPLOAD_FOLDER'], filename))
         processed_data = process_history(config['UPLOAD_FOLDER'], filename)
         processed_data = json.loads(processed_data)

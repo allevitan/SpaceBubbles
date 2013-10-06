@@ -13,12 +13,13 @@ body {
 }
 
 #viz {
+ margin-top:0px;
  margin-left:-30%;
  width:100%;
 }
 
 #desc {
-    font-size:18;
+    font-size:20;
 }
 
 #disWhereYouNeedToPutIt {
@@ -26,3 +27,4 @@ body {
     margin-top:25px;
     font-size:24;
 }
+
