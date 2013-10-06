@@ -1,6 +1,6 @@
 from flask.views import MethodView
 from flask import Blueprint, render_template, request, jsonify, session
-from models import User, Space, Node, Page, Comment
+from models import User, Space, Node, Page, Comment, Graph
 from bson.objectid import ObjectId
 
 api = Blueprint('api', __name__, template_folder="../templates")
@@ -32,7 +32,7 @@ class GetSpace(MethodView):
             user = User.objects(id=ObjectId(session.get('uid')))[0]
             space = user.spaces(id=ObjectId(request.args['sid']))[0]
         except:
-            return jsonify({'error': 'User id or Space id invalid'})
+            return jsonify({'error': 'User id or Space i'})
         if len(spaces) == 0:
             return jsonify({'error': 'No spaces found'})
         nodes = space.nodes
@@ -105,9 +105,30 @@ class AddComment(MethodView):
         
     	return jsonify({'success':1})
 
+class AddGraph(MethodView):
+    def post(self):
+        if not (session and session.get('uid')):
+            return jsonify({'error': 'Not logged in'})
+        if not request.form.get('data'):
+            return jsonify({'error': 'No data sent!'})
+        user = User.objects.get(id=ObjectId(session.get('uid')))
+        graph = Graph(data=request.form['data'],user=user)
+
+class GetGraph(MethodView):
+    def get(self):
+        if not (session and session.get('uid')):
+            return jsonify({'error': 'Not logged in'})
+        user = User.objects.get(id=ObjectId(session.get('uid')))
+        graphs = Graph.objects(user=user)
+        if len(graphs) == 0:
+            return jsonify({'error': 'No graphs stored!'})
+        return jsonify(user.graphs[0].data)
+            
 api.add_url_rule("/api/get/spaces", view_func=GetSpaces.as_view('get_spaces'))
 api.add_url_rule("/api/get/space", view_func=GetSpace.as_view('get_space'))
 api.add_url_rule("/api/add/space", view_func=AddSpace.as_view('add_space'))
 api.add_url_rule("/api/add/node", view_func=AddNode.as_view('add_node'))
 api.add_url_rule("/api/add/page", view_func=AddPage.as_view('add_page'))
 api.add_url_rule("/api/add/comment", view_func=AddComment.as_view('add_comment'))
+api.add_url_rule("/api/add/graph", view_func=AddGraph.as_view('add_graph'))
+api.add_url_rule("/api/get/graph", view_func=GetGraph.as_view('get_graph'))

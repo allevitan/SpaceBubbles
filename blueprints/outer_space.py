@@ -2,13 +2,13 @@ from flask.views import MethodView
 from flask import Blueprint, render_template, request, session, jsonify, redirect
 from models import User
 
-home = Blueprint('home', __name__, template_folder="../templates")
+outer_space = Blueprint('outer_space', __name__, template_folder="../templates")
 
-class Home(MethodView):
+class OuterSpace(MethodView):
 
     def get(self):
         if not (session and session.get('uid')):
             return redirect('/login')
-        return redirect('my_graph')
+        return render_template('outer_space.html')
 
-home.add_url_rule("/", view_func=Home.as_view('home'))
+outer_space.add_url_rule("/outer_space", view_func=OuterSpace.as_view('outer_space'))

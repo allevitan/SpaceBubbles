@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from mongoengine import *
 from tornado.wsgi import WSGIContainer
-from tornado.httpserver import httpserverServer
+from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 
 app = Flask(__name__)
@@ -26,6 +26,9 @@ def register_blueprints(app):
     from blueprints.signup import signup
     from blueprints.login import login
     from blueprints.logout import logout
+    from blueprints.myspace import myspace
+    from blueprints.my_graph import my_graph
+    from blueprints.outer_space import outer_space
     from blueprints.expand import expand
     app.register_blueprint(home)
     app.register_blueprint(static)
@@ -33,6 +36,9 @@ def register_blueprints(app):
     app.register_blueprint(signup)
     app.register_blueprint(login)
     app.register_blueprint(logout)
+    app.register_blueprint(myspace)
+    app.register_blueprint(my_graph)
+    app.register_blueprint(outer_space)
     app.register_blueprint(expand)
 
 register_blueprints(app)

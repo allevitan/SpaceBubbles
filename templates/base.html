@@ -7,8 +7,9 @@
   <body>
     <div class="navbar">
       <div class="navbar-inner">
-	<a class="brand" href="#">Space Bubbles</a>
+	<a class="brand" href="/">Space Bubbles</a>
 	<ul class="nav pull-right">
+	  <li><a href="/logout">Log Out</a></li>
 	  <li><a href="/login">Log In</a></li>
 	  <li><a href="/signup">Sign Up</a></li>
         </ul>
@@ -19,8 +20,12 @@
 	</ul>
       </div>
     </div>
-    {% block content %}
-    {% endblock %}
+    <div class="container"> 
+      <h1>{% block header %}{% endblock %}</h1>
+      </br>
+      {% block content %}
+      {% endblock %}
+    </div>
   </body>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="/static/js/base.js" charset="utf-8"></script>

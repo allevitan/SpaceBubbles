@@ -1,19 +1,29 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block header %}
+<div style="width:100%;text-align:center;"> Log In </div>
+{% endblock %}
 
-<form method = "post"> 
-    <h2>Login</h2>
-    <label> Username
-        <input type="text" name="username" value="{{username}}">
-    </label>
-    <br>
-    <label> Password
-        <input type="password" name="password" value="{{password}}">
-    </label>
-    <div style="color: red">{{login_error}}</div>  
-    <br>  
-    <input type = "submit">
+{% block content %}
+<form class="form-horizontal well well-large" style="width:400px; margin-left:auto;margin-right:auto;" method = "post"> 
+  <div class="control-group">
+    <label class="control-label" for="username">Username</label>
+    <div class="controls">
+        <input type="text" name="username" id="username" value="{{username}}" placeholder="Username">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="password">Password</label>
+    <div class="controls">
+      <input type="password" name="password" id="password" value="{{password}}" placeholder="Password">
+    </div>
+  </div>
+  <div style="color: red">{{login_error}}</div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn">Log In</button>
+    </div>
+  </div>
 </form>
 
 {% endblock %}

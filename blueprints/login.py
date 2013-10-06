@@ -18,12 +18,13 @@ class Login(MethodView):
     def post(self):
         login_input_username = str(request.form.get("username"))
         login_input_pw = str(request.form.get("password"))
-
+        
         try:
             u = User.objects.get(name=login_input_username)
             if u: 
                 stored_hashed_pw = u.hashedpass
                 if SButils.valid_pw(login_input_pw, stored_hashed_pw):
+                    session['uid'] = str(u.id)
                     return redirect("/")
                 else:
                     loginerror = "Invalid username and password combination."

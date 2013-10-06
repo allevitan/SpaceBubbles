@@ -6,6 +6,10 @@ from models import User
 logout = Blueprint('logout', __name__, template_folder="../templates")
 
 class Logout(MethodView):
+    def get(self):
+        session.pop("uid")
+        return redirect("/")
+
     def post(self):
         session.pop("uid")
         return redirect("/")
