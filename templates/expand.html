@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method = "post"> 
+    <h2>The SpaceBubbles universe is always expanding</h2>
+    <label> Which space?
+        <input type="text" name="space" value="{{space}}">
+    </label>
+    <br>
+    <label> URL 
+        <input type="text" name="url" value="{{url}}">
+    </label>
+    <div style="color: red">{{login_error}}</div>  
+    <br>  
+    <input type = "submit">
+</form>
+
+{% endblock %}
