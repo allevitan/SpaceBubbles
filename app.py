@@ -1,8 +1,6 @@
 import os
-from urlparse import urlparse
-from flask import Flask, render_template, send_from_directory
+from flask import Flask
 from mongoengine import *
-from server import models
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
@@ -20,14 +18,13 @@ else:
   connect('spacebubbles',host='localhost', port=27017)
   app.debug = True
 
+def register_blueprints(app):
+    from blueprints.home import home
+    from blueprints.static import static
+    app.register_blueprint(home)
+    app.register_blueprint(static)
 
-@app.route('/')
-def hello():
-  return render_template('home.html')
-
-@app.route('/static/<path:filename>')
-def static_files(filename):
-    return send_from_directory('static',filename)
+register_blueprints(app)
 
 if __name__ == '__main__':
 
