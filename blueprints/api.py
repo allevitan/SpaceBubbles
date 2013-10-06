@@ -26,6 +26,8 @@ class GetSpace(MethodView):
     def get(self):
         if not (session and session.get('uid')):
             return jsonify({'error': 'Not logged in'})
+        if not request.args.get('sid'):
+            return jsonify({'error': 'No space id provided'})
         user = User.objects(id=ObjectId(session.get('uid')))[0]
         spaces = user.spaces(id=ObjectId(request.args['sid']))
         if len(spaces) == 0:
