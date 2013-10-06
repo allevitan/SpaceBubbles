@@ -1,5 +1,6 @@
 from flask.views import MethodView
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session, jsonify
+from models import User
 
 home = Blueprint('home', __name__, template_folder="../templates")
 

@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, FloatField, ImageField, ListField, ReferenceField, DateTimeField, IntField
+from mongoengine import Document, StringField, FloatField, ImageField, ListField, ReferenceField, DateTimeField, IntField, EmailField
 import datetime
 
 class Page(Document):
@@ -11,7 +11,7 @@ class Page(Document):
 class Comment(Document):
     creation = DateTimeField(default=datetime.datetime.now, required=True)
     author = ReferenceField('User')
-    site = ReferenceField('Node')
+    text = StringField()
 
 class Node(Document):
     creation = DateTimeField(default=datetime.datetime.now, required=True)
@@ -29,10 +29,9 @@ class Space(Document):
 
 class User(Document):
     creation = DateTimeField(default=datetime.datetime.now, required=True)
-    uid = IntField()
-    salt = StringField(max_length=10)
-    hashedpass = StringField()
+    hashedpass = StringField(max_length=70)
     name = StringField(max_length=50)
+    email = EmailField()
     spaces = ListField(ReferenceField('Space'))
     friends = ListField(ReferenceField('User'))
     password = StringField(max_length=255)

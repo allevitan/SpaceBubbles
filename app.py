@@ -7,6 +7,7 @@ from tornado.ioloop import IOLoop
 
 app = Flask(__name__)
 MONGO_URL = os.environ.get('MONGOHQ_URL')
+app.config['SECRET_KEY'] = 'AJ592ej^9&srehgre034539jrgre'
 
 if MONGO_URL:
   # Get a connection
