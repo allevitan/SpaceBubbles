@@ -1,5 +1,5 @@
 from flask.views import MethodView
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, session
 import SButils
 from models import User
 
@@ -36,7 +36,6 @@ class Signup(MethodView):
         input_password = str(request.form.get("password"))
         input_verify = str(request.form.get("verify"))
         input_email = str(request.form.get("email"))
-        print input_email
 
         valid_username = SButils.valid_username(input_username)
         valid_password = SButils.valid_password(input_password)
@@ -57,11 +56,9 @@ class Signup(MethodView):
         if errors != ["", "", "", ""]:
             return self.write_form(errors, input_username, "", "", input_email)
         else:
-            user_existence = User.objects(email=str(input_email))
-            if len(user_existence) != 0:
-                errors[0] = "That user already exists."
-                return self.write_form(errors, input_username, "", "", input_email)
-            else:
+            try:
+                User.objects.get(name=input_username)
+            except:
                 #create hashed pw + salt
                 hashed_pw = SButils.make_pw_hash(str(input_password))
                 #create gravatar profile picture URL
@@ -71,10 +68,12 @@ class Signup(MethodView):
                          name=str(input_username), 
                          email=str(input_email), 
                          avatar=gravatarURL).save()
-                u.save()
+                session['uid'] = str(u.id)
                 return redirect('/')
                 #LOGIN!! WOOT
                 #self.login(username=str(input_username), secret=secret)
+            errors[0] = "That user already exists."
+            return self.write_form(errors, input_username, "", "", input_email)
                 
 signup.add_url_rule("/signup", view_func=Signup.as_view('signup'))
 
