@@ -107,23 +107,20 @@ d3.json('/api/get/graph', function(err, data) {
 });
 
 var change = function(){
-    d3.selectAll(".node").style('visibility', 'hidden');
-    d3.selectAll(".link").style('visibility', 'hidden');
     d3.select(this.firstChild)
         .transition()
-        .style('visibility', 'visible')
         .duration(1000)
-        .attr('r', '30%')
-        .attr('fill','red');
+        .attr('fill','white');
     };
 
 $('#svg-finished').waitUntilExists(function(){
-    $("#viz").on("click", function(event){
-        console.log(event.target.getAttribute('title'));
+
+    $('#viz').on('dblclick', function(event){
+        window.location = "http://" + event.target.getAttribute('title');
     });
 
     $("#viz").on("mouseover", function(event){
-        if (event.target.getAttribute('title') != 'null'){
+        if (event.target.getAttribute('title') !== null){
             $("#disWhereYouNeedToPutIt").text(event.target.getAttribute('title'));
         }
     });
