@@ -1,12 +1,26 @@
 <html>
   <head>
     <title>Space Bubbles</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/base.css">
   </head>
   <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+	<a class="brand" href="#">Space Bubbles</a>
+	<ul class="nav pull-right">
+	  <li><a href="/login">Log In</a></li>
+	  <li><a href="/signup">Sign Up</a></li>
+        </ul>
+	<ul class="nav">
+	  <li class="active"><a href="/my_graph">My Graph</a></li>
+	  <li><a href="/my_spaces">My Spaces</a></li>
+	  <li><a href="/outer_space">Outer Space</a></li>
+	</ul>
+      </div>
+    </div>
     {% block content %}
     {% endblock %}
-    <embed src="/static/svgs/background.svg" type="image/svg+xml" />
   </body>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="/static/js/base.js" charset="utf-8"></script>

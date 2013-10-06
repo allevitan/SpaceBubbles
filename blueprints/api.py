@@ -28,11 +28,14 @@ class GetSpace(MethodView):
             return jsonify({'error': 'Not logged in'})
         if not request.args.get('sid'):
             return jsonify({'error': 'No space id provided'})
-        user = User.objects(id=ObjectId(session.get('uid')))[0]
-        spaces = user.spaces(id=ObjectId(request.args['sid']))
+        try:
+            user = User.objects(id=ObjectId(session.get('uid')))[0]
+            space = user.spaces(id=ObjectId(request.args['sid']))[0]
+        except:
+            return jsonify({'error': 'User id or Space id invalid'})
         if len(spaces) == 0:
             return jsonify({'error': 'No spaces found'})
-        nodes = spaces[0].nodes
+        nodes = space.nodes
         output = [{'name': node.title,
                    'url': node.url,
                    'score': node.score,
