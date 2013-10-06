@@ -86,7 +86,7 @@ d3.json('/api/get/graph', function(err, data) {
 
     node.append('circle')
         .attr('r', function(d){
-            var value = 3.5*(((d.score - min)/(max-min))-0.5);
+            var value = 3.5*(((d.score - min)/(max-min))-0.35);
             return 30*(1/(1+Math.exp(-value)));
         })
         .attr('title', function(d) {return d.name;})
@@ -123,6 +123,8 @@ $('#svg-finished').waitUntilExists(function(){
     });
 
     $("#viz").on("mouseover", function(event){
-        $("#disWhereYouNeedToPutIt").text(event.target.getAttribute('title'));
+        if (event.target.getAttribute('title') != 'null'){
+            $("#disWhereYouNeedToPutIt").text(event.target.getAttribute('title'));
+        }
     });
 });
