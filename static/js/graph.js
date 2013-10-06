@@ -100,17 +100,11 @@ d3.json('static/json/data.json', function(err, data) {
 });
 
 var change = function(){
-    console.log("WAT");
-        d3.select(this).attr('r', 25)
-            .style("fill","lightcoral")
-            .style("stroke","red");
+    d3.select(this).attr('r', 25)
+        .attr("fill", "red")
+        .style("stroke","yellow");
     };
 
 $('#svg-finished').waitUntilExists(function(){
-    console.log("Sup");
-    console.log(d3.selectAll(".node")[0].length);
-    var nodes = d3.selectAll(".node")[0];
-    for (var i = 0; i<nodes.length; i++){
-        nodes[i].firstChild.on('click', change);
-    }
+    d3.selectAll(".node").on('click', change);
 });
