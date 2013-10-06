@@ -21,8 +21,10 @@ else:
 def register_blueprints(app):
     from blueprints.home import home
     from blueprints.static import static
+    from blueprints.api import api
     app.register_blueprint(home)
     app.register_blueprint(static)
+    app.register_blueprint(api)
 
 register_blueprints(app)
 
