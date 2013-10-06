@@ -29,8 +29,8 @@ $.fn.waitUntilExists    = function (handler, shouldRunHandlerOnce, isChild) {
 
 }(jQuery));
 
-var width = $(window).width(),
-    height = $(window).height();
+var width = 0.8*$(window).width(),
+    height = 0.8*$(window).height();
 
 var svg = d3.select('#viz')
     .append('svg')
