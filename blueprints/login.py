@@ -5,7 +5,6 @@ from models import User
 
 login = Blueprint('login', __name__, template_folder="../templates")
 
-
 class Login(MethodView):
     def write_form(self, username="", password="", loginerror=""):
         return render_template('login.html', 
