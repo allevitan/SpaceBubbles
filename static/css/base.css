@@ -14,17 +14,19 @@ body {
 
 #viz {
  margin-top:0px;
- margin-left:-30%;
+ margin-left:-18%;
  width:100%;
 }
 
 #desc {
     font-size:20;
+    user-select:none;
 }
 
 #disWhereYouNeedToPutIt {
     position:Absolute;
     margin-top:25px;
     font-size:24;
+    user-select:none;
 }
 

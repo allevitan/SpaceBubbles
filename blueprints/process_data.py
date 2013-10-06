@@ -25,10 +25,13 @@ class ProcessData(MethodView):
         if 'sql' in raw_data.filename.split('.')[-1]:
             filename += '.sqlite'
         raw_data.save(os.path.join(config['UPLOAD_FOLDER'], filename))
-        processed_data = process_history(config['UPLOAD_FOLDER'], filename)
-        processed_data = json.loads(processed_data)
-        Graph(data=processed_data, user=user).save()
-        os.remove(os.path.join(config['UPLOAD_FOLDER'], filename))
-        return redirect('my_graph')
+        try:
+            processed_data = process_history(config['UPLOAD_FOLDER'], filename)
+            processed_data = json.loads(processed_data)
+            Graph(data=processed_data, user=user).save()
+            os.remove(os.path.join(config['UPLOAD_FOLDER'], filename))
+            return redirect('my_graph')
+        except:
+            return redirect('my_graph')
 
 process_data.add_url_rule("/process_data", view_func=ProcessData.as_view('process_data'))
